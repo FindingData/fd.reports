@@ -17,7 +17,7 @@ namespace fd.reports.schedule
         {
             services.AddQuartz(q =>
             {
-                q.UseMicrosoftDependencyInjectionJobFactory();
+                q.UseJobFactory<MicrosoftDependencyInjectionJobFactory>();
 
                 // 注册定时报表导出任务
                 var jobKey = new JobKey("ExportDailyReportJob");
@@ -27,8 +27,14 @@ namespace fd.reports.schedule
                 q.AddTrigger(opts => opts
                     .ForJob(jobKey)
                     .WithIdentity("ExportDailyReportTrigger")
-                    .WithCronSchedule("0 0 1 * * ?") // 每天凌晨 1 点执行
+                    .WithCronSchedule("0 0 1 ? * MON-FRI") // 每天凌晨 1 点执行
                 );
+
+                q.ScheduleJob<SendDailyReportJob>(trigger => trigger
+                  .WithIdentity("send-daily-report-job")
+                   .WithCronSchedule("0 0 8 ? * MON-FRI") // 每周一到五 8 点
+                  );
+
             });
 
             services.AddQuartzHostedService(opt =>

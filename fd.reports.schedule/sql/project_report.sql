@@ -531,6 +531,6 @@
  where p.customer_id in (389,886)
    and p.is_delete = 0
    and p.project_status in (40001001, 40001002, 40001003, 40001005)     
-      and p.created_time >= to_date('2025-07-28 00:00:00', 'yyyy-MM-dd hh24:mi:ss')   
+      and p.created_time >= to_date('2024-01-01 00:00:00', 'yyyy-MM-dd hh24:mi:ss')
          -- to_date('2024-01-01 00:00:00', 'yyyy-MM-dd hh24:mi:ss')   
  order by p.created_time

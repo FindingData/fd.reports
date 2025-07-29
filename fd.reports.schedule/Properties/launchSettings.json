@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "fd.reports.schedule": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Production"
+      }
+    }
+  }
+}

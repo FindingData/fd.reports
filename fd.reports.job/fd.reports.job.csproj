@@ -11,6 +11,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\fd.infrastructure\fd.infrastructure.core\fd.infrastructure.core.csproj" />
     <ProjectReference Include="..\fd.reports.core\fd.reports.core.csproj" />
   </ItemGroup>
 

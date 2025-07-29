@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="10.0.0" />
     <PackageReference Include="Microsoft.Extensions.Hosting" Version="9.0.7" />
     <PackageReference Include="Oracle.ManagedDataAccess.Core" Version="23.9.1" />
     <PackageReference Include="Quartz" Version="3.14.0" />
@@ -28,10 +29,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Page Include="sql\project_report.sql" />
+	  <None Include="sql\project_report.sql">
+		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+	  </None>
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\fd.infrastructure\fd.infrastructure.core\fd.infrastructure.core.csproj" />
     <ProjectReference Include="..\fd.reports.core\fd.reports.core.csproj" />
     <ProjectReference Include="..\fd.reports.domain\fd.reports.domain.csproj" />
     <ProjectReference Include="..\fd.reports.job\fd.reports.job.csproj" />
