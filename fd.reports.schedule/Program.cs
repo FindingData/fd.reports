@@ -32,7 +32,7 @@ var builder = Host.CreateDefaultBuilder(args)
         services.AddMemoryCache();
         services.AddSingleton<ICacheService, MemoryCacheService>();
         
-        services.AddScoped<IReportGenerator, SqlReportGenerator>();
+     
         services.AddScoped<IExportStrategy, ExcelExportStrategy>();
         services.AddScoped<IReportAppService, ReportAppService>();
         

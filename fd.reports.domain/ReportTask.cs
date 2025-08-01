@@ -2,9 +2,13 @@
 {
     public class ReportTask
     {
-        public ReportType ReportType { get; init; }
-        public DateTime ReportDate { get; init; }
-        public string OutputPath { get; init; }
+        public ReportType report_type { get; init; }
+
+  
+
+        public Dictionary<string, object>? parameters { get; set; }
+
+        public string output_path { get; init; }
     }
 
 }

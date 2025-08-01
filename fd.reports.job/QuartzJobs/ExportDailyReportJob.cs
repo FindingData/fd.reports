@@ -21,9 +21,16 @@ namespace fd.reports.job.QuartzJobs
         public async Task Execute(IJobExecutionContext context)
         {
             var today = DateTime.Today.AddDays(-1); // 导出昨日数据
-            var cmd = new ExportReportCommand { ReportDate = today };
+            var cmd = new ExportReportCommand
+            {
+                reprot_date = today,
+                parameters = new Dictionary<string, object>() {
+                { "report_start_date" , DateTime.Today.AddDays(-1) }
+            }
+            };
+            
             var path = await _appService.HandleExportCommand(cmd);
-            _cacheService.RPush("fd.reports:pending_files", path);
+            _cacheService.RPush("fd.reports.project:pending_files", path);
             Console.WriteLine($"✅ 导出成功: {path}");
         }
     }

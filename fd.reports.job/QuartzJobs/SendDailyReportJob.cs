@@ -29,7 +29,12 @@ namespace fd.reports.job.QuartzJobs
 
             var fileToSend = _cacheService.ListDequeue("fd.reports:pending_files");
             if (fileToSend != null)
+            {
                 await _emailSender.SendReportAsync(_mailSettings.ToEmail, fileToSend.ToString());
+                Console.WriteLine($"✅ 发送邮件成功: {fileToSend}");
+            }
+                
+
         }
     }
 

@@ -45,6 +45,7 @@ namespace fd.reports.core.Utilities
             await conn.OpenAsync();
 
             using var cmd = new OracleCommand(sql, conn);
+            cmd.BindByName = true;
             cmd.Parameters.AddRange(parameters);
             var adapter = new OracleDataAdapter(cmd);           
             var table = new DataTable();

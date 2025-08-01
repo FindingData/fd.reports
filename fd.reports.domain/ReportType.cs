@@ -12,7 +12,7 @@ namespace fd.reports.domain
         /// 项目进度报表（主SQL）
         /// </summary>
         ProjectProgress = 1,
-
+        HNBankLedger = 2,
         // 可拓展其他类型：
         // TaskSummary = 2,
         // BankReport = 3,

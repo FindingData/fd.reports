@@ -11,12 +11,10 @@ namespace fd.reports.core.Services
 {
     public class ReportAppService : IReportAppService
     {
-        private readonly IReportGenerator _generator;
         private readonly IExportStrategy _exporter;
 
-        public ReportAppService(IReportGenerator generator, IExportStrategy exporter)
+        public ReportAppService(IExportStrategy exporter)
         {
-            _generator = generator;
             _exporter = exporter;
         }
 
@@ -24,14 +22,32 @@ namespace fd.reports.core.Services
         {
             var task = new ReportTask
             {
-                ReportType = ReportType.ProjectProgress,
-                ReportDate = cmd.ReportDate,
-                OutputPath = $"exports/report_{cmd.ReportDate:yyyy-MM-dd}.xlsx"
+                report_type = ReportType.ProjectProgress,               
+                parameters = cmd.parameters,
+                output_path = $"{cmd.report_type.ToString().ToLower()}_{cmd.reprot_date:yyyy-MM-dd}.xlsx",
             };
-
-            var data = await _generator.GenerateAsync(task);
+            var generator = CreateGenerator(cmd.report_type);
+            var data = await generator.GenerateAsync(task);
             return await _exporter.ExportAsync(data, task);
         }
+
+        /// <summary>
+        /// 简单工厂，根据报表类型选择生成器
+        /// </summary>
+        private IReportGenerator CreateGenerator(ReportType type)
+        {
+            return type switch
+            {
+                ReportType.ProjectProgress =>
+                    new SqlReportGenerator("sql/project_report.sql"),
+
+                ReportType.HNBankLedger =>
+                    new SqlReportGenerator("sql/hn_bank_ledger.sql"),
+
+                _ => throw new NotSupportedException($"未支持的报表类型: {type}")
+            };
+        }
+
     }
 
 }

@@ -9,13 +9,15 @@ namespace fd.reports.core.Commands
 {
     public class ExportReportCommand
     {
-        public ReportType ReportType { get; set; } = ReportType.ProjectProgress;
+        public ReportType report_type { get; set; } = ReportType.ProjectProgress;
 
-        public DateTime ReportDate { get; set; }
+        public DateTime reprot_date { get; set; }
+
+        public Dictionary<string, object>? parameters { get; set; }
 
         public ExportReportCommand()
         {
-            ReportDate = DateTime.Today;
+            reprot_date = DateTime.Today;
         }
     }
 }

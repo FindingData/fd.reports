@@ -14,7 +14,7 @@ namespace fd.reports.core.Services
     {
         public async Task<string> ExportAsync(DataTable data, ReportTask task)
         {
-            var fileName = $"report_{task.ReportDate:yyyy-MM-dd}.xlsx";
+            var fileName = task.output_path;
             var filePath = Path.Combine("exports", fileName);
 
             using var workbook = new XLWorkbook();
