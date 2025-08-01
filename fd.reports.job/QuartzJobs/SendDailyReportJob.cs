@@ -9,7 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace fd.reports.job
+namespace fd.reports.job.QuartzJobs
 {
     public class SendDailyReportJob : IJob
     {
@@ -26,8 +26,10 @@ namespace fd.reports.job
 
         public async Task Execute(IJobExecutionContext context)
         {
+
             var fileToSend = _cacheService.ListDequeue("fd.reports:pending_files");
-            await _emailSender.SendReportAsync(_mailSettings.ToEmail, fileToSend.ToString());
+            if (fileToSend != null)
+                await _emailSender.SendReportAsync(_mailSettings.ToEmail, fileToSend.ToString());
         }
     }
 

@@ -4,14 +4,14 @@ using fd.reports.core.IServices;
 using fd.reports.core.Services;
 using Quartz;
 
-namespace fd.reports.job
+namespace fd.reports.job.QuartzJobs
 {
     public class ExportDailyReportJob : IJob
     {
         private readonly IReportAppService _appService;
         private readonly ICacheService _cacheService;
 
-        public ExportDailyReportJob(IReportAppService appService,ICacheService cacheService)
+        public ExportDailyReportJob(IReportAppService appService, ICacheService cacheService)
         {
             _appService = appService;
             _cacheService = cacheService;

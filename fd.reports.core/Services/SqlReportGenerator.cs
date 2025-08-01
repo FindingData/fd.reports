@@ -22,7 +22,7 @@ namespace fd.reports.core.Services
             //    new("end_date", OracleDbType.Date) { Value = task.ReportDate.Date.AddDays(1).AddTicks(-1) }
             //};
 
-            return await SqlHelper.QueryAsync(sql); // 可返回 DataTable
+            return await SqlHelper.QueryAsyncV2(sql); // 可返回 DataTable
         }
     }
 

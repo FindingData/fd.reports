@@ -7,7 +7,8 @@ using System.Text;
 using System.Threading.Tasks;
 using Quartz;
 using Quartz.Simpl;
-using fd.reports.job;
+using fd.reports.job.QuartzJobs;
+using fd.reports.schedule.Adapters;
 
 namespace fd.reports.schedule
 {

@@ -27,12 +27,28 @@ namespace fd.reports.core.Utilities
             await conn.OpenAsync();
 
             using var cmd = new OracleCommand(sql, conn);            
-            cmd.Parameters.AddRange(parameters);
-
+            cmd.Parameters.AddRange(parameters);           
             using var reader = await cmd.ExecuteReaderAsync();
 
             var table = new DataTable();
             table.Load(reader);
+
+            return table;
+        }
+
+        public static async Task<DataTable> QueryAsyncV2(string sql, params OracleParameter[] parameters)
+        {
+            if (_connectionString == null)
+                throw new InvalidOperationException("SqlHelper not initialized.");
+
+            using var conn = new OracleConnection(_connectionString);
+            await conn.OpenAsync();
+
+            using var cmd = new OracleCommand(sql, conn);
+            cmd.Parameters.AddRange(parameters);
+            var adapter = new OracleDataAdapter(cmd);           
+            var table = new DataTable();
+            adapter.Fill(table);
 
             return table;
         }

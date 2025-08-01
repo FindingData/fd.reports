@@ -13,6 +13,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fd.reports.domain", "fd.rep
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "fd.infrastructure.core", "..\fd.infrastructure\fd.infrastructure.core\fd.infrastructure.core.csproj", "{9BC85818-CFD6-46BF-BC96-CEAF3500096E}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "fd.reports.scheduler.hangfire", "fd.reports.scheduler.hangfire\fd.reports.scheduler.hangfire.csproj", "{7160C988-83D3-4808-9938-1608E7B9FF26}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -39,6 +41,10 @@ Global
 		{9BC85818-CFD6-46BF-BC96-CEAF3500096E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9BC85818-CFD6-46BF-BC96-CEAF3500096E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{9BC85818-CFD6-46BF-BC96-CEAF3500096E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7160C988-83D3-4808-9938-1608E7B9FF26}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7160C988-83D3-4808-9938-1608E7B9FF26}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7160C988-83D3-4808-9938-1608E7B9FF26}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7160C988-83D3-4808-9938-1608E7B9FF26}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
