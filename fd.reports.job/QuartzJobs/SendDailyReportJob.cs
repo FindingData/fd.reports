@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
 
 namespace fd.reports.job.QuartzJobs
@@ -26,15 +27,19 @@ namespace fd.reports.job.QuartzJobs
 
         public async Task Execute(IJobExecutionContext context)
         {
-
-            var fileToSend = _cacheService.ListDequeue("fd.reports:pending_files");
-            if (fileToSend != null)
+            var data = _cacheService.ListDequeue("fd.reports:pending_files");
+            if (data != null)
             {
-                await _emailSender.SendReportAsync(_mailSettings.ToEmail, fileToSend.ToString());
-                Console.WriteLine($"✅ 发送邮件成功: {fileToSend}");
-            }
-                
-
+                var pendingMail = JsonSerializer.Deserialize<PendingMail>(data.ToString());
+                if (pendingMail != null)
+                {
+                    await _emailSender.SendReportAsync(pendingMail.recipients,
+                    pendingMail.file_path,
+                    pendingMail.subject,
+                    pendingMail.body);
+                    Console.WriteLine($"✅ 发送邮件成功: {pendingMail.file_path}");
+                }
+            }                      
         }
     }
 

@@ -12,49 +12,51 @@ using System.Threading.Tasks;
 namespace fd.reports.core.Services
 {
     public class SqlReportGenerator : IReportGenerator
-    {
-        private readonly string _sqlFile;
-
-        public SqlReportGenerator(string sqlFile)
-        {
-            _sqlFile = sqlFile;
-        }
-
-        public async Task<DataTable> GenerateAsync(ReportTask task)
+    {      
+        public async Task<DataTable> GenerateAsync(string sqlFile, Dictionary<string, object> parameters)
         {
             // 1. 读取 SQL 模板
-            var sql = File.ReadAllText(_sqlFile);
+            var sql = File.ReadAllText(sqlFile);
             // 2. 根据任务类型决定参数
-            var parameters = BuildParameters(task);
+            var oracleParams = ToOracleParameters(parameters);
             // 3. 执行 SQL 并返回 DataTable
-            return await SqlHelper.QueryAsyncV2(sql,parameters); // 可返回 DataTable
+            return await SqlHelper.QueryAsyncV2(sql, oracleParams); // 可返回 DataTable
         }
 
-        /// <summary>
-        /// 根据报表任务构建参数
-        /// </summary>
-        private OracleParameter[] BuildParameters(ReportTask task)
+        public OracleParameter[] ToOracleParameters(Dictionary<string, object> parameters)
         {
-            return task.report_type switch
+            if (parameters == null || parameters.Count == 0)
+                return Array.Empty<OracleParameter>();
+
+            return parameters.Select(kv =>
             {
-                ReportType.ProjectProgress => new OracleParameter[]
+                var paramName = kv.Key.StartsWith(":") ? kv.Key : $":{kv.Key}";
+                var value = kv.Value ?? DBNull.Value;
+
+                var oracleType = GetOracleDbType(value);
+
+                return new OracleParameter(paramName, oracleType)
                 {
-                      new("start_date", OracleDbType.Date) {
-                      Value = task.parameters != null && task.parameters.TryGetValue("report_start_date", out var v) ? v : DateTime.Now 
-                      },
-                },
-                ReportType.HNBankLedger => new OracleParameter[]
-                {
-                     new("start_date", OracleDbType.Date) {
-                     Value = task.parameters != null && task.parameters.TryGetValue("report_start_date", out var v1) ? v1 : DateTime.Now
-                     },
-                     new("end_date", OracleDbType.Date) {
-                       Value = task.parameters != null && task.parameters.TryGetValue("report_end_date", out var v2) ? v2 : DateTime.Now
-                     }
-                },
-                _ => Array.Empty<OracleParameter>()
+                    Value = value
+                };
+            }).ToArray();
+        }
+
+        private OracleDbType GetOracleDbType(object value)
+        {
+            return value switch
+            {
+                int => OracleDbType.Int32,
+                long => OracleDbType.Int64,
+                decimal => OracleDbType.Decimal,
+                double => OracleDbType.Double,
+                DateTime => OracleDbType.Date,
+                bool => OracleDbType.Int16, // Oracle没有bool，用0/1
+                _ => OracleDbType.Varchar2
             };
         }
+
+
     }
 
 }

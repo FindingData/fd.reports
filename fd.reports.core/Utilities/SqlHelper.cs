@@ -21,7 +21,7 @@ namespace fd.reports.core.Utilities
         public static async Task<DataTable> QueryAsync(string sql, params OracleParameter[] parameters)
         {
             if (_connectionString == null)
-                throw new InvalidOperationException("SqlHelper not initialized.");
+                throw new InvalidOperationException("SqlHelper not invoke Initialize method.");
 
             using var conn = new OracleConnection(_connectionString);
             await conn.OpenAsync();

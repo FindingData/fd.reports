@@ -19,25 +19,22 @@ namespace fd.reports.core.Utilities
             _settings = options.Value;
         }
 
-        public async Task SendReportAsync(string toEmail, string filePath, string? subject = null)
+        public async Task SendReportAsync(IEnumerable<string> recipients, string filePath, string? subject,string body)
         {
             var message = new MimeMessage();
-            message.From.Add(new MailboxAddress(_settings.FromName, _settings.FromEmail));
-            message.To.Add(MailboxAddress.Parse(toEmail));
-            message.Subject = subject ?? "📊 报表已生成";
+            message.From.Add(new MailboxAddress(_settings.from_name, _settings.from_email));
+            foreach (var recipient in recipients)
+                message.To.Add(new MailboxAddress(recipient, recipient));
 
-            var builder = new BodyBuilder
-            {
-                TextBody = "您好，\n\n请查收附件。\n\n-- 报表系统"
-            };
+            message.Subject = subject;
 
+            var builder = new BodyBuilder { TextBody = body };
             builder.Attachments.Add(filePath);
-
             message.Body = builder.ToMessageBody();
 
             using var smtp = new SmtpClient();
-            await smtp.ConnectAsync(_settings.SmtpServer, _settings.Port, MailKit.Security.SecureSocketOptions.StartTls);
-            await smtp.AuthenticateAsync(_settings.User, _settings.Password);
+            await smtp.ConnectAsync(_settings.smtp_server, _settings.port, MailKit.Security.SecureSocketOptions.StartTls);
+            await smtp.AuthenticateAsync(_settings.user, _settings.password);
             await smtp.SendAsync(message);
             await smtp.DisconnectAsync(true);
         }

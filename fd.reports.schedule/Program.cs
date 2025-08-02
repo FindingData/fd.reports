@@ -27,15 +27,16 @@ var builder = Host.CreateDefaultBuilder(args)
         var configuration = context.Configuration;
         SqlHelper.Initialize(configuration);
         services.Configure<MailSettings>(configuration.GetSection("MailSettings"));
-
+        services.Configure<List<ReportTemplate>>(configuration.GetSection("ReportTemplates"));
+        services.Configure<List<PendingMail>>(configuration.GetSection("PendingMails"));
         // ✅ 注册报表核心服务
         services.AddMemoryCache();
         services.AddSingleton<ICacheService, MemoryCacheService>();
         
      
         services.AddScoped<IExportStrategy, ExcelExportStrategy>();
-        services.AddScoped<IReportAppService, ReportAppService>();
-        
+        services.AddScoped<IReportService, ReportService>();
+        services.AddScoped<IReportGenerator, SqlReportGenerator>();
         services.AddSingleton<EmailSender>();
        
         services.AddQuartzJobs();

@@ -8,10 +8,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <None Remove="sql\project_report.sql" />
-  </ItemGroup>
-
-  <ItemGroup>
     <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
   </ItemGroup>
 
@@ -29,12 +25,6 @@
   </ItemGroup>
 
   <ItemGroup>
-	  <None Include="sql\project_report.sql">
-		  <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-	  </None>
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\fd.infrastructure\fd.infrastructure.core\fd.infrastructure.core.csproj" />
     <ProjectReference Include="..\fd.reports.core\fd.reports.core.csproj" />
     <ProjectReference Include="..\fd.reports.domain\fd.reports.domain.csproj" />
@@ -49,6 +39,9 @@
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Update="appsettings.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="sql\daily_project.sql">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

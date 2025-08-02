@@ -10,7 +10,7 @@ namespace fd.reports.core.IServices
 {
     public interface IReportGenerator
     {
-        Task<DataTable> GenerateAsync(ReportTask task);
+        Task<DataTable> GenerateAsync(string sqlFile, Dictionary<string, object> parameters);
     }
 
 }

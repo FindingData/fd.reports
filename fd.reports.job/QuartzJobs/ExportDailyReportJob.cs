@@ -2,36 +2,24 @@
 using fd.reports.core.Commands;
 using fd.reports.core.IServices;
 using fd.reports.core.Services;
+using fd.reports.domain;
+using Microsoft.Extensions.Options;
 using Quartz;
+using System.Text.Json;
 
 namespace fd.reports.job.QuartzJobs
 {
-    public class ExportDailyReportJob : IJob
+    public class ExportDailyReportJob : ReportJobBase, IJob
     {
-        private readonly IReportAppService _appService;
-        private readonly ICacheService _cacheService;
+        protected override string ReportType => "daily_report";
 
-        public ExportDailyReportJob(IReportAppService appService, ICacheService cacheService)
+
+        public ExportDailyReportJob(IReportService reportService,
+            ICacheService cacheService,
+            IOptions<List<ReportTemplate>> templates,
+            IOptions<List<PendingMail>> pendingMails) : base(reportService, cacheService, templates,pendingMails)
         {
-            _appService = appService;
-            _cacheService = cacheService;
-        }
 
-
-        public async Task Execute(IJobExecutionContext context)
-        {
-            var today = DateTime.Today.AddDays(-1); // 导出昨日数据
-            var cmd = new ExportReportCommand
-            {
-                reprot_date = today,
-                parameters = new Dictionary<string, object>() {
-                { "report_start_date" , DateTime.Today.AddDays(-1) }
-            }
-            };
-            
-            var path = await _appService.HandleExportCommand(cmd);
-            _cacheService.RPush("fd.reports.project:pending_files", path);
-            Console.WriteLine($"✅ 导出成功: {path}");
         }
     }
 

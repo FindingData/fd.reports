@@ -138,14 +138,18 @@
     on ft.project_id = p.project_id
    and ft.rn = 1
  where p.is_delete = 0
-   and (rm.created_time >= :report_date_start and
-       rm.created_time <= :report_date_end or
+    and (p.crm_customer_name like '%湖南银行%')
+   --and p.is_invoice = 0  
+   and(pe.report_person like '%湖南银行湘潭分行%' 
+   or pe.report_person like '%湖南银行股份有限公司湘潭分行%')
+   and (rm.created_time >= :start_date and
+       rm.created_time <= :end_date or
        (rm2.created_time >=
-       :report_date_start and
+       :start_date and
        rm2.created_time <=
-       :report_date_end) or
+       :end_date) or
        (rept.completed_date >=
-       :report_date_start and
+       :start_date and
        rept.completed_date <=
-      :report_date_end))
+      :end_date))
    and p.customer_id = 389

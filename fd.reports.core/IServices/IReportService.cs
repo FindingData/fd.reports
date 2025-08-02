@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace fd.reports.core.IServices
 {
-    public interface IReportAppService
+    public interface IReportService
     {
         /// <summary>
         /// 执行报表导出任务

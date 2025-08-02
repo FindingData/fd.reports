@@ -8,6 +8,7 @@ using Hangfire.Storage.SQLite;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using System.Configuration;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -17,14 +18,15 @@ builder.Configuration
     .AddJsonFile("appsettings.json", optional: false, reloadOnChange: true)
     .AddJsonFile($"appsettings.{builder.Environment.EnvironmentName}.json", optional: true, reloadOnChange: true);
 
-
+SqlHelper.Initialize(builder.Configuration);
 // 1️⃣ 注册报表依赖
 builder.Services.AddMemoryCache();
+
 builder.Services.AddSingleton<ICacheService, MemoryCacheService>();
 builder.Services.AddScoped<IExportStrategy, ExcelExportStrategy>();
-builder.Services.AddScoped<IReportAppService, ReportAppService>();
+builder.Services.AddScoped<IReportService, ReportService>();
 builder.Services.AddSingleton<IExportStrategy, ExcelExportStrategy>();
-builder.Services.AddSingleton<ReportAppService>();
+builder.Services.AddSingleton<ReportService>();
 
 // 注册 Job
 builder.Services.AddTransient<HNBankLegerReportJob>();
@@ -47,6 +49,7 @@ app.UseHangfireDashboard("/hangfire");
 
 // 4️⃣ 注册定时任务：每季度第一天早8点执行
 var jobManager = app.Services.GetRequiredService<IRecurringJobManager>();
+
 // 注册每季度首日8点执行
 jobManager.AddOrUpdate<HNBankLegerReportJob>(
     "HNBankLedgerQuarterlyJob",       // 任务唯一ID

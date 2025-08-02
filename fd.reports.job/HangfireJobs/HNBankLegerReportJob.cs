@@ -14,10 +14,10 @@ namespace fd.reports.job.HangfireJobs
 {
     public class HNBankLegerReportJob
     {
-        private readonly IReportAppService _reportService;
+        private readonly IReportService _reportService;
         private readonly ICacheService _cacheService;
 
-        public HNBankLegerReportJob(IReportAppService reportService, ICacheService cacheService)
+        public HNBankLegerReportJob(IReportService reportService, ICacheService cacheService)
         {
             _reportService = reportService;
             _cacheService = cacheService;
@@ -29,11 +29,11 @@ namespace fd.reports.job.HangfireJobs
             var lastQuarter = today.GetQuarterRange(-1);
             var cmd = new ExportReportCommand
             {
-                report_type = ReportType.HNBankLedger,
+                report_type = "hn_bank_report",
                 reprot_date = today,
                 parameters = new Dictionary<string, object> {
-                    { "report_start_date", lastQuarter.Start },
-                    { "report_end_date", lastQuarter.End }
+                    { "start_date", lastQuarter.Start },
+                    { "end_date", lastQuarter.End }
                 }
             };
             var filePath = await _reportService.HandleExportCommand(cmd);            

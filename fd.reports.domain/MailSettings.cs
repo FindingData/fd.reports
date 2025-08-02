@@ -8,13 +8,12 @@ namespace fd.reports.domain
 {
     public class MailSettings
     {
-        public string SmtpServer { get; set; } = default!;
-        public int Port { get; set; }
-        public string User { get; set; } = default!;
-        public string Password { get; set; } = default!;
-        public string FromName { get; set; } = default!;
-        public string FromEmail { get; set; } = default!;
+        public string smtp_server { get; set; }
+        public int port { get; set; }
+        public string user { get; set; }
+        public string password { get; set; }
+        public string from_name { get; set; }
+        public string from_email { get; set; }
 
-        public string ToEmail { get; set; } = default!;
     }
 }
